@@ -1,0 +1,36 @@
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Data — regenerable from the ingestion scripts
+*.duckdb
+*.duckdb.wal
+*.parquet
+raw_news/
+project_notes.md
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+# dbt
+target/
+dbt_packages/
+logs/
+.user.yml
+
+# Airflow
+airflow/logs/
+airflow.db
+airflow.cfg
+webserver_config.py
+standalone_admin_password.txt
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/

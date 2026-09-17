@@ -1,0 +1,11 @@
+
+version: 2
+
+sources:
+  - name: stock_n_news
+    description: "contains stock prices like open, close, high etc and latest news from finnhub"
+    schema: main
+    tables:
+      - name: stocks
+      - name: news 
+    

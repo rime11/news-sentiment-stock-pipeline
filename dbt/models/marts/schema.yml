@@ -1,0 +1,34 @@
+
+version: 2
+
+models:
+  - name: mart_stock_news
+    columns:
+      - name: ticker
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['HOOD', 'SOFI', 'STX', 'RDDT', 'GOOGL']
+      - name: sentiment_category
+        tests:
+          - accepted_values:
+               values: ['positive','negative','neutral'] 
+      - name: open_price_movement
+        tests:
+          - not_null
+      - name: close_price_movement
+        tests:
+          - not_null
+      - name: high_price_movement
+        tests:
+          - not_null
+      - name: low_price_movement
+        tests:
+          - not_null
+      - name: volume_movement
+        tests:
+          - not_null
+
+
+
+

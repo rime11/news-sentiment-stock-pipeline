@@ -1,0 +1,9 @@
+  
+  yfinance 
+  
+  finnhub-python
+
+  dbt-duckdb 
+  duckdb 
+
+  vaderSentiment 

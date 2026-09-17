@@ -1,0 +1,21 @@
+
+  #praw 
+  yfinance 
+  
+  finnhub-python
+
+  dbt-duckdb 
+  duckdb 
+
+  vaderSentiment 
+  
+
+  apache-airflow 
+
+  streamlit 
+  plotly 
+  
+
+  pandas 
+  python-dotenv
+

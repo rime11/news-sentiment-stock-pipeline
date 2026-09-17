@@ -1,0 +1,8 @@
+news_stock_prediction_dbt:
+  target: default
+  outputs:
+    default:
+      type: duckdb
+      path: ../pipeline.duckdb
+      threads: 4
+
