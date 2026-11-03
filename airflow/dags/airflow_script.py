@@ -1,3 +1,4 @@
+import os
 from datetime import datetime, timedelta
 from airflow.decorators import dag, task
 import runpy
@@ -9,7 +10,8 @@ from datetime import datetime
 order of tasks
 1. [ingest tocks, ingest news]
 2. [check quality, check quality]
-5. run dbt
+3. dbt build
+4. export to a parquet file for streamlit
 '''
 #define default settings
 default_args = {
@@ -68,11 +70,28 @@ def stock_news_pipeline():
     @task.bash
     def run_dbt():
         return(
-        'cd /opt/airflow/dbt && dbt run --profiles-dir /opt/airflow/dbt'
+        'cd /opt/airflow/dbt && dbt build --profiles-dir /opt/airflow/dbt'
         )
- 
+    
+    @task(task_id="export_parquet")
+    def export_parquet():
+        db_path = '/opt/airflow/pipeline.duckdb'
+        final_path = '/opt/airflow/export/mart_stock_news.parquet'
+        temp_path = '/opt/airflow/export/mart_stock_news_temp.parquet'
+        with duckdb.connect(db_path, read_only = True) as conn:
+             # 1. write the mart to the temp file
+            conn.execute(f"COPY mart_stock_news TO '{temp_path}' (FORMAT PARQUET)")
+            # 2. count rows
+            mart_count = conn.execute("SELECT COUNT(*) FROM mart_stock_news").fetchone()[0]
+            file_count = conn.execute(f"SELECT COUNT(*) FROM '{temp_path}'").fetchone()[0]
+            # 3. check the counts match
+            if file_count != mart_count:
+                raise ValueError(f"Row count mismatch: mart has {mart_count} rows, but temp file has {file_count} rows")
+        # 4. if they match, rename the temp file to the final file
+        os.replace(temp_path, final_path) #not os.rename because it fails on windows
+       
     # Sequential ingestion required — DuckDB only supports one writer at a time
-    read_stocks() >> read_news() >> [quality_stocks_checks(),quality_news_checks()] >> run_dbt()
+    read_stocks() >> read_news() >> [quality_stocks_checks(),quality_news_checks()] >> run_dbt() >> export_parquet()
 
 stock_news_pipeline()
 

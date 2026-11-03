@@ -1,8 +1,4 @@
-{{ config (
-    materialized ='external',
-    location ='../export/mart_stock_news.parquet',
-
-) }}
+{{ config ( materialized ='table' ) }}
 
 with price_movement as (
 SELECT 
@@ -19,7 +15,8 @@ SELECT
     (close_after_news - close_before_news) / NULLIF(close_before_news,0) AS close_price_movement,
     (high_after_news - high_before_news) / NULLIF(high_before_news,0) AS high_price_movement,
     (low_after_news - low_before_news) / NULLIF(low_before_news,0) AS low_price_movement,
-    (volume_after_news - volume_before_news) / NULLIF(volume_before_news,0) AS volume_price_movement
+    (volume_after_news - volume_before_news) / NULLIF(volume_before_news,0) AS volume_price_movement,
+    gap_between_lookahead 
 
 FROM {{ ref('int_stock_news_aggregated') }})
 
@@ -31,7 +28,8 @@ SELECT ticker,
     ROUND(close_price_movement,4) AS close_price_movement, 
     ROUND(high_price_movement, 4) AS high_price_movement,
     ROUND(low_price_movement,4) AS low_price_movement,
-    ROUND(volume_price_movement,4) AS volume_movement
+    ROUND(volume_price_movement,4) AS volume_movement,
+    gap_between_lookahead
 
     FROM price_movement
     

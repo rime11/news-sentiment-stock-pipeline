@@ -82,6 +82,8 @@ x-airflow-common:
     - ../dbt:/opt/airflow/dbt
     - ../ingestion:/opt/airflow/ingestion
     - ../export:/opt/airflow/export
+   
+  
     
   user: "${AIRFLOW_UID:-50000}:0"
   depends_on:

@@ -7,8 +7,11 @@
 *.duckdb
 *.duckdb.wal
 *.parquet
+/export/*
+!export/.gitkeep
 raw_news/
 project_notes.md
+my_docs/
 
 # Python
 .venv/
