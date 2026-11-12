@@ -25,6 +25,7 @@ target/
 dbt_packages/
 logs/
 .user.yml
+dbt_packages/
 
 # Airflow
 airflow/logs/

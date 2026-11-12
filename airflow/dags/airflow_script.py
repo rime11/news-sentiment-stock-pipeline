@@ -70,7 +70,7 @@ def stock_news_pipeline():
     @task.bash
     def run_dbt():
         return(
-        'cd /opt/airflow/dbt && dbt build --profiles-dir /opt/airflow/dbt'
+        'cd /opt/airflow/dbt && dbt deps && dbt build --profiles-dir /opt/airflow/dbt'
         )
     
     @task(task_id="export_parquet")
